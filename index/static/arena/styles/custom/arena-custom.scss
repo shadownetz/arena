@@ -1,0 +1,31 @@
+$color: (
+  white: rgb(255, 255, 255),
+  black: rgb(0, 0, 0)
+);
+$mobile_320: 320px;
+@function get_transparency($key, $degree) {
+  $result: transparentize(map-get($color, $key), $degree);
+  @return $result;
+}
+@mixin mobile-320() {
+  @media screen and (min-width:#{$mobile_320}) {
+    @content;
+  }
+}
+#arena {
+  #arena-account {
+    .modal-content {
+      background: get_transparency(black, 0.5);
+    }
+    @include mobile-320() {
+      form {
+        .form-padding {
+          padding: 5px 0px;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+      }
+    }
+  }
+}

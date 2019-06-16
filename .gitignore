@@ -1,0 +1,4 @@
+# Do not track this folders
+.idea/
+__pycache__/
+venv/

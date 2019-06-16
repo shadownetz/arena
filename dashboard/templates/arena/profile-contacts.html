@@ -1,0 +1,162 @@
+{% extends 'arena/dash_base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="content__inner content__inner--sm">
+        <form>
+        {% csrf_token %}
+
+            <div class="contacts row">
+
+                <div class="col-md-12 col-sm-12 col-12">
+                    <div class="card widget-profile">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <img src="{{ user.avatar.url }}" class="widget-profile__img" alt="">
+                                <h2 class="card-title">{{ user.username }}</h2>
+                                <p class="card-subtitle">{{ user.email }}</p>
+                            </div>
+
+                        </div>
+
+                        <div class="widget-profile__list">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-user"></i></div>
+                                            <template v-if="toggle_name_edit">
+                                                <div class="media-body">
+                                                    <input class="form-control" type="text"
+                                                           placeholder="Edit first name"
+                                                           v-model="first_name">
+                                                    <input class="form-control" type="text"
+                                                           placeholder="Edit last name"
+                                                           v-model="last_name">
+                                                </div>
+                                            </template>
+                                            <template v-else>
+                                                <div class="media-body">
+                                                    <strong>{{ user.get_full_name }}</strong>
+                                                    <small>Fullname</small>
+                                                </div>
+                                            </template>
+
+                                            <template v-if="toggle_name_edit">
+                                                <a href="#" class="btn btn-outline-theme-dark" data-toggle="button" title="save"
+                                                   @click="editFullName($event, 1)">
+                                                    <i class="zwicon-checkmark zwicon-"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                   @click="toggle_full_name_edit">
+                                                    <i class="zwicon-close"></i>
+                                                </a>
+                                            </template>
+                                            <template v-else>
+                                                <a href="#" class="btn btn-outline-theme-dark"
+                                                   data-toggle="button"
+                                                   @click="toggle_full_name_edit">
+                                                    <i class="zwicon-edit-pencil"></i>
+                                                </a>
+                                            </template>
+                                        </div>
+
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-user"></i></div>
+                                            <div class="media-body">
+                                                <strong>{{ user.username }}</strong>
+                                                <small>Username</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-mail"></i></div>
+                                            <div class="media-body">
+                                                <strong>{{ user.email }}</strong>
+                                                <small>Email</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-password"></i></div>
+                                            <div class="media-body">
+                                                <strong>xxxxxxxx</strong>
+                                                <small>Password</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-phone"></i></div>
+                                            <div class="media-body">
+                                                {% if dashboard.phone_number %}
+                                                    <strong>{{ dashboard.phone_number }}</strong>
+                                                {% else %}
+                                                    <strong>No Phone Number</strong>
+                                                {% endif %}
+                                                <small>Phone</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-clock"></i></div>
+                                            <div class="media-body">
+                                                <strong>{{ user.date_created }}</strong>
+                                                <small>Joined</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-info-circle"></i></div>
+                                            <div class="media-body">
+                                                {% if dashboard.about %}
+                                                    <strong>{{ dashboard.about }}</strong>
+                                                {% else %}
+                                                    <strong>No bio</strong>
+                                                {% endif %}
+                                                <small>About</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                        <div class="media">
+                                            <div class="avatar-char"><i class="zwicon-user-circle"></i></div>
+                                            <div class="media-body">
+                                                {% if dashboard.nick_name %}
+                                                    <strong>{{ dashboard.nick_name }}</strong>
+                                                {% else %}
+                                                    <strong>No Public id (username will be used)</strong>
+                                                {% endif %}
+                                                <small>Public ID</small>
+                                            </div>
+                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
+                                                <i class="zwicon-edit-pencil"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="p-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </form>
+{% endblock %}

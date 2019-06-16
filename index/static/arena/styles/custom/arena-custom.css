@@ -1,0 +1,13 @@
+#arena #arena-account .modal-content {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (min-width: 320px) {
+  #arena #arena-account form .form-padding {
+    padding: 5px 0px;
+  }
+  #arena #arena-account form button:hover {
+    cursor: pointer;
+  }
+}
+/*# sourceMappingURL=arena-custom.css.map */
