@@ -2,618 +2,746 @@
 <html lang="en">
 
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Arena | Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Arena | {% block title %}{% endblock %}</title>
     {% load static %}
 
-        <!-- Vendor styles -->
-        <link rel="stylesheet" href="{% static 'arena/resources/vendors/zwicon/zwicon.min.css' %}">
-        <link rel="stylesheet" href="{% static 'arena/resources/vendors/animate.css/animate.min.css' %}">
-        <link rel="stylesheet" href="{% static 'arena/resources/vendors/overlay-scrollbars/OverlayScrollbars.min.css' %}">
-        <link rel="stylesheet" href="{% static 'arena/resources/vendors/fullcalendar/core/main.min.css' %}">
-        <link rel="stylesheet" href="{% static 'arena/resources/vendors/fullcalendar/daygrid/main.min.css' %}">
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/zwicon/zwicon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/overlay-scrollbars/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/fullcalendar/core/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/fullcalendar/daygrid/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    {% block link %}{% endblock %}
+    {% if alert_script %}
+        <link rel="stylesheet" href="{% static 'arena/resources/vendors/sweetalert2/sweetalert2.min.css' %}">
+    {% endif %}
+    <!-- App styles -->
+    <link rel="stylesheet" href="{% static 'arena/resources/css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/css/custom.css' %}">
 
-        <!-- App styles -->
-        <link rel="stylesheet" href="{% static 'arena/resources/css/app.min.css' %}">
-    </head>
+</head>
 
-    <body data-sa-theme="4">
-        <main class="main" id="arena-dashboard">
-            <div class="page-loader">
-                <div class="page-loader__spinner">
-                    <svg viewBox="25 25 50 50">
-                        <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
-                    </svg>
-                </div>
+<body data-sa-theme="2">
+<main class="main" id="arena-dashboard">
+    <div class="page-loader">
+        <div class="page-loader__spinner">
+            <svg viewBox="25 25 50 50">
+                <circle cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="navigation-trigger d-xl-none" data-sa-action="aside-open" data-sa-target=".sidebar">
+            <i class="zwicon-hamburger-menu"></i>
+        </div>
+
+        <div class="logo d-none d-sm-inline-flex">
+            <a href="{% url 'arena:arena_dashboard:index' %}">Arena | Dashboard</a>
+        </div>
+
+        <form class="search">
+            <div class="search__inner">
+                <input type="text" class="search__text" placeholder="Search for people, files, documents...">
+                <i class="zwicon-search search__helper"></i>
+                <i class="zwicon-arrow-left search__reset" data-sa-action="search-close"></i>
             </div>
+        </form>
+        {# Dashboard Navigation Items #}
+        <ul class="top-nav">
+            <li class="d-xl-none"><a href="#" data-sa-action="search-open"><i class="zwicon-search"></i></a></li>
 
-            <header class="header">
-                <div class="navigation-trigger d-xl-none" data-sa-action="aside-open" data-sa-target=".sidebar">
-                    <i class="zwicon-hamburger-menu"></i>
-                </div>
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="top-nav__notify"><i class="zwicon-mail"></i></a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu--block">
+                    <div class="dropdown-header">
+                        Messages
 
-                <div class="logo d-none d-sm-inline-flex">
-                    <a href="{% url 'arena:arena_dashboard:index' %}">Arena | Dashboard</a>
-                </div>
-
-                <form class="search">
-                    <div class="search__inner">
-                        <input type="text" class="search__text" placeholder="Search for people, files, documents...">
-                        <i class="zwicon-search search__helper"></i>
-                        <i class="zwicon-arrow-left search__reset" data-sa-action="search-close"></i>
-                    </div>
-                </form>
-
-                <ul class="top-nav">
-                    <li class="d-xl-none"><a href="#" data-sa-action="search-open"><i class="zwicon-search"></i></a></li>
-
-                    <li class="dropdown">
-                        <a href="#" data-toggle="dropdown" class="top-nav__notify"><i class="zwicon-mail"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu--block">
-                            <div class="dropdown-header">
-                                Messages
-
-                                <div class="actions">
-                                    <a href="messages.html" class="actions__item zwicon-plus"></a>
-                                </div>
-                            </div>
-
-                            <div class="listview listview--hover">
-                                <a href="#" class="listview__item">
-                                    <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
-
-                                    <div class="listview__content">
-                                        <div class="listview__heading">
-                                            David Belle <small>12:01 PM</small>
-                                        </div>
-                                        <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
-
-                                    <div class="listview__content">
-                                        <div class="listview__heading">
-                                            Jonathan Morris
-                                            <small>02:45 PM</small>
-                                        </div>
-                                        <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
-
-                                    <div class="listview__content">
-                                        <div class="listview__heading">
-                                            Fredric Mitchell Jr.
-                                            <small>08:21 PM</small>
-                                        </div>
-                                        <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <img src="{% static 'arena/demo/img/profile-pics/4.jpg' %}" class="avatar-img" alt="">
-
-                                    <div class="listview__content">
-                                        <div class="listview__heading">
-                                            Glenn Jecobs
-                                            <small>08:43 PM</small>
-                                        </div>
-                                        <p>Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <img src="{% static 'arena/demo/img/profile-pics/5.jpg' %}" class="avatar-img" alt="">
-
-                                    <div class="listview__content">
-                                        <div class="listview__heading">
-                                            Bill Phillips
-                                            <small>11:32 PM</small>
-                                        </div>
-                                        <p>Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="view-more">View all messages</a>
-                            </div>
+                        <div class="actions">
+                            <a href="messages.html" class="actions__item zwicon-plus"></a>
                         </div>
-                    </li>
+                    </div>
 
-                    <li class="dropdown top-nav__notifications">
-                        <a href="#" data-toggle="dropdown" class="top-nav__notify">
-                            <i class="zwicon-bell"></i>
+                    <div class="listview listview--hover">
+                        <a href="#" class="listview__item">
+                            <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
+
+                            <div class="listview__content">
+                                <div class="listview__heading">
+                                    David Belle <small>12:01 PM</small>
+                                </div>
+                                <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                            </div>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu--block">
-                            <div class="dropdown-header">
-                                Notifications
 
-                                <div class="actions">
-                                    <a href="#" class="actions__item zwicon-checkmark-square" data-sa-action="notifications-clear"></a>
+                        <a href="#" class="listview__item">
+                            <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
+
+                            <div class="listview__content">
+                                <div class="listview__heading">
+                                    Jonathan Morris
+                                    <small>02:45 PM</small>
                                 </div>
+                                <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
                             </div>
+                        </a>
 
-                            <div class="listview listview--hover">
-                                <div class="listview__scroll scrollbar">
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
+                        <a href="#" class="listview__item">
+                            <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
 
-                                        <div class="listview__content">
-                                            <div class="listview__heading">David Belle</div>
-                                            <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Jonathan Morris</div>
-                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Fredric Mitchell Jr.</div>
-                                            <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/4.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Glenn Jecobs</div>
-                                            <p>Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/5.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Bill Phillips</div>
-                                            <p>Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">David Belle</div>
-                                            <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Jonathan Morris</div>
-                                            <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="listview__item">
-                                        <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
-
-                                        <div class="listview__content">
-                                            <div class="listview__heading">Fredric Mitchell Jr.</div>
-                                            <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
-                                        </div>
-                                    </a>
+                            <div class="listview__content">
+                                <div class="listview__heading">
+                                    Fredric Mitchell Jr.
+                                    <small>08:21 PM</small>
                                 </div>
-
-                                <div class="p-1"></div>
+                                <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
                             </div>
-                        </div>
-                    </li>
+                        </a>
 
-                    <li class="dropdown d-none d-sm-inline-block">
-                        <a href="#" data-toggle="dropdown"><i class="zwicon-checkmark-circle"></i></a>
+                        <a href="#" class="listview__item">
+                            <img src="{% static 'arena/demo/img/profile-pics/4.jpg' %}" class="avatar-img" alt="">
 
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
-                            <div class="dropdown-header">Tasks</div>
-
-                            <div class="listview listview--hover">
-                                <a href="#" class="listview__item">
-                                    <div class="listview__content">
-                                        <div class="listview__heading">HTML5 Validation Report</div>
-
-                                        <div class="progress mt-1">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <div class="listview__content">
-                                        <div class="listview__heading">Google Chrome Extension</div>
-
-                                        <div class="progress mt-1">
-                                            <div class="progress-bar bg-warning" style="width: 43%" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <div class="listview__content">
-                                        <div class="listview__heading">Social Intranet Projects</div>
-
-                                        <div class="progress mt-1">
-                                            <div class="progress-bar bg-success" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <div class="listview__content">
-                                        <div class="listview__heading">Bootstrap Admin Template</div>
-
-                                        <div class="progress mt-1">
-                                            <div class="progress-bar bg-info" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="listview__item">
-                                    <div class="listview__content">
-                                        <div class="listview__heading">Youtube Client App</div>
-
-                                        <div class="progress mt-1">
-                                            <div class="progress-bar bg-danger" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="view-more">View all Tasks</a>
+                            <div class="listview__content">
+                                <div class="listview__heading">
+                                    Glenn Jecobs
+                                    <small>08:43 PM</small>
+                                </div>
+                                <p>Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</p>
                             </div>
-                        </div>
-                    </li>
+                        </a>
 
-                    <li class="dropdown d-none d-sm-inline-block">
-                        <a href="#" data-toggle="dropdown"><i class="zwicon-grid"></i></a>
+                        <a href="#" class="listview__item">
+                            <img src="{% static 'arena/demo/img/profile-pics/5.jpg' %}" class="avatar-img" alt="">
 
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
-                            <div class="row app-shortcuts">
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-calendar-never"></i>
-                                    <small class="">Calendar</small>
-                                </a>
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-document"></i>
-                                    <small class="">Files</small>
-                                </a>
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-mail"></i>
-                                    <small class="">Email</small>
-                                </a>
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-line-chart"></i>
-                                    <small class="">Reports</small>
-                                </a>
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-broadcast"></i>
-                                    <small class="">News</small>
-                                </a>
-                                <a class="col-4 app-shortcuts__item" href="#">
-                                    <i class="zwicon-image"></i>
-                                    <small class="">Gallery</small>
-                                </a>
+                            <div class="listview__content">
+                                <div class="listview__heading">
+                                    Bill Phillips
+                                    <small>11:32 PM</small>
+                                </div>
+                                <p>Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</p>
                             </div>
-                        </div>
-                    </li>
+                        </a>
 
-                    <li class="dropdown d-none d-sm-inline-block">
-                        <a href="#" data-toggle="dropdown"><i class="zwicon-more-h"></i></a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item" data-sa-action="fullscreen">Fullscreen</a>
-                            <a href="#" class="dropdown-item">Clear Local Storage</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                        </div>
-                    </li>
-
-                    <li class="d-none d-sm-inline-block">
-                        <a href="#" class="top-nav__themes" data-sa-action="aside-open" data-sa-target=".themes"><i class="zwicon-palette"></i></a>
-                    </li>
-                </ul>
-
-                <div class="clock d-none d-md-inline-block">
-                    <div class="time">
-                        <span class="time__hours"></span>
-                        <span class="time__min"></span>
-                        <span class="time__sec"></span>
+                        <a href="#" class="view-more">View all messages</a>
                     </div>
                 </div>
-            </header>
+            </li>
 
-            <aside class="sidebar ">
-                <div class="scrollbar">
-                    <div class="user">
-                        <div class="user__info" data-toggle="dropdown">
-                            <img class="user__img" src="{{ user.avatar.url }}" alt="">
-                            <div>
-                                <div class="user__name">{{ user.username }}</div>
-                                <div class="user__email">{{ user.email }}</div>
-                            </div>
-                        </div>
+            <li class="dropdown top-nav__notifications">
+                <a href="#" data-toggle="dropdown" class="top-nav__notify">
+                    <i class="zwicon-bell"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu--block">
+                    <div class="dropdown-header">
+                        Notifications
 
-                        <div class="dropdown-menu dropdown-menu--invert">
-                            <a class="dropdown-item" href="{% url 'arena:arena_dashboard:profile' %}">View Profile</a>
-                            <a class="dropdown-item" href="#">Settings</a>
-                            <a class="dropdown-item" href="{% url 'arena:logout' %}">Logout</a>
+                        <div class="actions">
+                            <a href="#" class="actions__item zwicon-checkmark-square" data-sa-action="notifications-clear"></a>
                         </div>
                     </div>
 
-                    <ul class="navigation">
-                        <li class="navigation__active"><a href="{% url 'arena:arena_dashboard:index' %}"><i class="zwicon-home"></i> Home</a></li>
+                    <div class="listview listview--hover">
+                        <div class="listview__scroll scrollbar">
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
 
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-three-h"></i> Variants</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li><a href="hidden-sidebar.html">Hidden Sidebar</a></li>#}
-{#                                <li><a href="boxed-layout.html">Boxed Layout</a></li>#}
-{#                                <li><a href="hidden-sidebar-boxed-layout.html">Boxed Layout with Hidden Sidebar</a></li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li>#}
-{#                            <a href="typography.html"><i class="zwicon-edit-square-feather"></i> Typography</a>#}
-{#                        </li>#}
-{##}
-{#                        <li>#}
-{#                            <a href="widgets.html"><i class="zwicon-layout-4"></i> Widgets</a>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-layout-2"></i> Tables</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li>#}
-{#                                    <a href="html-table.html">HTML Table</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="data-table.html">Data Table</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-note"></i> Forms</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li>#}
-{#                                    <a href="form-elements.html">Basic Form Elements</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="form-components.html">Form Components</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="form-layouts.html">Form Layouts</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="form-validation.html">Form Validation</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-cursor-square"></i> User Interface</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li>#}
-{#                                    <a href="colors.html">Colors</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="css-animations.html">CSS Animations</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="buttons.html">Buttons</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="icons.html">Icons</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="listview.html">Listview</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="toolbars.html">Toolbars</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="cards.html">Cards</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="alerts.html">Alerts</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="badges.html">Badges</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="breadcrumbs.html">Bredcrumbs</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="jumbotron.html">Jumbotron</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="navs.html">Navs</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="pagination.html">Pagination</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="progress.html">Progress</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-tray-stack"></i> Javascript Components</a>#}
-{##}
-{#                            <ul class="navigation__sub">#}
-{#                                <li>#}
-{#                                    <a href="carousel.html">Carousel</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="collapse.html">Collapse</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="dropdowns.html">Dropdowns</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="modals.html">Modals</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="popover.html">Popover</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="tabs.html">Tabs</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="tooltips.html">Tooltips</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="toast.html">Toasts</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="treeview.html">Tree View</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="custom-alerts.html">Custom Alerts</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-line-chart"></i> Charts</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li>#}
-{#                                    <a href="flot-charts.html">Flot</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="other-charts.html">Other Charts</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="maps.html">Maps</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{##}
-{#                        <li>#}
-{#                            <a href="calendar.html"><i class="zwicon-calendar-never"></i> Calendar</a>#}
-{#                        </li>#}
-{##}
-{#                        <li>#}
-{#                            <a href="photo-gallery.html"><i class="zwicon-image"></i> Photo Gallery</a>#}
-{#                        </li>#}
-{##}
-{#                        <li class="navigation__sub">#}
-{#                            <a href="#"><i class="zwicon-repository"></i> Sample Pages</a>#}
-{##}
-{#                            <ul>#}
-{#                                <li>#}
-{#                                    <a href="profile-about.html">Profile</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="messages.html">Messages</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="contacts.html">Contacts</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="new-contact.html">New Contact</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="groups.html">Groups</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="pricing-tables.html">Pricing Tables</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="invoice.html">Invoice</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="todo-lists.html">Todo Lists</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="notes.html">Notes</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="search-results.html">Search Results</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="issue-tracker.html">Issue Tracker</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="faq.html">FAQ</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="team.html">Team</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="blog.html">Blog</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="blog-detail.html">Blog Detail</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="questions-answers.html">Questions & Answers</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="questions-answers-details.html">Questions & Answers Details</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="login.html">Login & SignUp</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="lockscreen.html">Lockscreen</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="404.html">404</a>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a href="empty.html">Empty Page</a>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-                    </ul>
+                                <div class="listview__content">
+                                    <div class="listview__heading">David Belle</div>
+                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Jonathan Morris</div>
+                                    <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Fredric Mitchell Jr.</div>
+                                    <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/4.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Glenn Jecobs</div>
+                                    <p>Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/5.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Bill Phillips</div>
+                                    <p>Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/1.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">David Belle</div>
+                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/2.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Jonathan Morris</div>
+                                    <p>Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</p>
+                                </div>
+                            </a>
+
+                            <a href="#" class="listview__item">
+                                <img src="{% static 'arena/demo/img/profile-pics/3.jpg' %}" class="avatar-img" alt="">
+
+                                <div class="listview__content">
+                                    <div class="listview__heading">Fredric Mitchell Jr.</div>
+                                    <p>Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="p-1"></div>
+                    </div>
                 </div>
-            </aside>
-            <div class="themes">
-                <div class="scrollbar">
-                    <a href="#" class="themes__item" data-sa-value="1"><img src="{% static 'arena/resources/img/bg/1.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="2"><img src="{% static 'arena/resources/img/bg/2.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="3"><img src="{% static 'arena/resources/img/bg/3.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="4"><img src="{% static 'arena/resources/img/bg/4.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="5"><img src="{% static 'arena/resources/img/bg/5.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="6"><img src="{% static 'arena/resources/img/bg/6.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="7"><img src="{% static 'arena/resources/img/bg/7.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="8"><img src="{% static 'arena/resources/img/bg/8.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="9"><img src="{% static 'arena/resources/img/bg/9.jpg' %}" alt=""></a>
-                    <a href="#" class="themes__item" data-sa-value="10"><img src="{% static 'arena/resources/img/bg/10.jpg' %}" alt=""></a>
+            </li>
+
+            <li class="dropdown d-none d-sm-inline-block">
+                <a href="#" data-toggle="dropdown"><i class="zwicon-checkmark-circle"></i></a>
+
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
+                    <div class="dropdown-header">Tasks</div>
+
+                    <div class="listview listview--hover">
+                        <a href="#" class="listview__item">
+                            <div class="listview__content">
+                                <div class="listview__heading">HTML5 Validation Report</div>
+
+                                <div class="progress mt-1">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#" class="listview__item">
+                            <div class="listview__content">
+                                <div class="listview__heading">Google Chrome Extension</div>
+
+                                <div class="progress mt-1">
+                                    <div class="progress-bar bg-warning" style="width: 43%" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#" class="listview__item">
+                            <div class="listview__content">
+                                <div class="listview__heading">Social Intranet Projects</div>
+
+                                <div class="progress mt-1">
+                                    <div class="progress-bar bg-success" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#" class="listview__item">
+                            <div class="listview__content">
+                                <div class="listview__heading">Bootstrap Admin Template</div>
+
+                                <div class="progress mt-1">
+                                    <div class="progress-bar bg-info" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#" class="listview__item">
+                            <div class="listview__content">
+                                <div class="listview__heading">Youtube Client App</div>
+
+                                <div class="progress mt-1">
+                                    <div class="progress-bar bg-danger" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#" class="view-more">View all Tasks</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="dropdown d-none d-sm-inline-block">
+                <a href="#" data-toggle="dropdown"><i class="zwicon-grid"></i></a>
+
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu--block" role="menu">
+                    <div class="row app-shortcuts">
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-calendar-never"></i>
+                            <small class="">Calendar</small>
+                        </a>
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-document"></i>
+                            <small class="">Files</small>
+                        </a>
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-mail"></i>
+                            <small class="">Email</small>
+                        </a>
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-line-chart"></i>
+                            <small class="">Reports</small>
+                        </a>
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-broadcast"></i>
+                            <small class="">News</small>
+                        </a>
+                        <a class="col-4 app-shortcuts__item" href="#">
+                            <i class="zwicon-image"></i>
+                            <small class="">Gallery</small>
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="dropdown d-none d-sm-inline-block">
+                <a href="#" data-toggle="dropdown"><i class="zwicon-more-h"></i></a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="#" class="dropdown-item" data-sa-action="fullscreen">Fullscreen</a>
+                    <a href="#" class="dropdown-item">Clear Local Storage</a>
+                    <a href="#" class="dropdown-item">Settings</a>
+                </div>
+            </li>
+
+            <li class="d-none d-sm-inline-block">
+                <a href="#" class="top-nav__themes" data-sa-action="aside-open" data-sa-target=".themes"><i class="zwicon-palette"></i></a>
+            </li>
+            <li class="d-none d-sm-inline-block">
+                <a class="btn btn-theme-dark btn--icon" href="{% url 'arena:index' %}"><i class="zwicon-home"></i></a>
+            </li>
+        </ul>
+
+        <div class="clock d-none d-md-inline-block">
+            <div class="time">
+                <span class="time__hours"></span>
+                <span class="time__min"></span>
+                <span class="time__sec"></span>
+            </div>
+        </div>
+
+        {# End of Dashboard Navigation Items #}
+    </header>
+
+    <div class="alert alert-success alert-dismissible dash-err-block animated">
+        {#        <button type="button" class="close">#}
+        {#            <span>×</span>#}
+        {#        </button>#}
+
+        <h4 class="alert-heading"></h4>
+        <p class="mb-0 alert-content"></p>
+
+    </div>
+
+    <aside class="sidebar ">
+        <div class="scrollbar">
+            <div class="user">
+                <div class="user__info" data-toggle="dropdown">
+                    <img class="user__img" src="{{ user.avatar.url }}" alt="">
+                    <div>
+                        <div class="user__name js-uname">{{ user.username }}</div>
+                        <div class="user__email js-email">{{ user.email }}</div>
+                    </div>
+                </div>
+
+                <div class="dropdown-menu dropdown-menu--invert">
+                    <a class="dropdown-item" href="{% url 'arena:arena_dashboard:profile' %}">View Profile</a>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <a class="dropdown-item" href="{% url 'arena:logout' %}">Logout</a>
                 </div>
             </div>
 
-            <section class="content" id="dash_content">
-                {% block content %}
 
-                {% endblock %}
+            <ul class="navigation">
+                <li class="navigation__active"><a href="{% url 'arena:arena_dashboard:index' %}"><i class="zwicon-home"></i> Home</a></li>
+                {% if user.is_staff %}
+                    <li class="navigation__sub">
+                        <a href="#"><i class="zwicon-three-h"></i> Event Center</a>
+                        <ul>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:addEventCenter' %}">
+                                    <i class="zwicon-add-item-alt"></i>&nbsp;Add
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:viewAllEventCenter' %}">
+                                    <i class="fa fa-edit"></i>&nbsp;Manage
+                                </a>
+                            </li>
+                            {% if user.is_superuser %}
+                                <li>
+                                    <a href="#">
+                                        <i class="zwicon-delete"></i>&nbsp;Delete
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-pie-chart"></i>&nbsp;View Stats
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="navigation__sub">
+                        <a href="#"><i class="zwicon-bell"></i> Food&amp;Drink</a>
+                        <ul>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:addFoodDrink' %}">
+                                    <i class="zwicon-add-item-alt"></i>&nbsp;Add
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}">
+                                    <i class="fa fa-edit"></i>&nbsp;Manage
+                                </a>
+                            </li>
+                            {% if user.is_superuser %}
+                                <li>
+                                    <a href="#">
+                                        <i class="zwicon-delete"></i>&nbsp;Delete
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-pie-chart"></i>&nbsp;View Stats
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="navigation__sub">
+                        <a href="#"><i class="zwicon-git-fork"></i>Restuarants</a>
+                        <ul>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:addRestaurant' %}">
+                                    <i class="zwicon-add-item-alt"></i>&nbsp;Add
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'arena:arena_dashboard:viewAllRestaurants' %}">
+                                    <i class="fa fa-edit"></i>&nbsp;Manage
+                                </a>
+                            </li>
+                            {% if user.is_superuser %}
+                                <li>
+                                    <a href="#">
+                                        <i class="zwicon-delete"></i>&nbsp;Delete
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-pie-chart"></i>&nbsp;View Stats
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if not user.is_staff %}
+                    <li class="navigation__sub">
+                        <a href="#"><i class="zwicon-three-h"></i> Reviews</a>
+                        <ul>
+                            <li>
+                                <a href="hidden-sidebar.html">
+                                    <i class="zwicon-edit-pencil"></i>&nbsp;edit reviews
+                                </a>
+                            </li>
+                            <li>
+                                <a href="boxed-layout.html">
+                                    <i class="zwicon-delete"></i>&nbsp;delete reviews
+                                </a>
+                            </li>
+                            <li>
+                                <a href="hidden-sidebar-boxed-layout.html">
+                                    <i class="fa fa-star-half-empty"></i>&nbsp;re-rate reviews
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {##}
+                {#                        <li>#}
+                {#                            <a href="typography.html"><i class="zwicon-edit-square-feather"></i> Typography</a>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li>#}
+                {#                            <a href="widgets.html"><i class="zwicon-layout-4"></i> Widgets</a>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-layout-2"></i> Tables</a>#}
+                {##}
+                {#                            <ul>#}
+                {#                                <li>#}
+                {#                                    <a href="html-table.html">HTML Table</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="data-table.html">Data Table</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-note"></i> Forms</a>#}
+                {##}
+                {#                            <ul>#}
+                {#                                <li>#}
+                {#                                    <a href="form-elements.html">Basic Form Elements</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="form-components.html">Form Components</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="form-layouts.html">Form Layouts</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="form-validation.html">Form Validation</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-cursor-square"></i> User Interface</a>#}
+                {##}
+                {#                            <ul>#}
+                {#                                <li>#}
+                {#                                    <a href="colors.html">Colors</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="css-animations.html">CSS Animations</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="buttons.html">Buttons</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="icons.html">Icons</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="listview.html">Listview</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="toolbars.html">Toolbars</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="cards.html">Cards</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="alerts.html">Alerts</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="badges.html">Badges</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="breadcrumbs.html">Bredcrumbs</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="jumbotron.html">Jumbotron</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="navs.html">Navs</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="pagination.html">Pagination</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="progress.html">Progress</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-tray-stack"></i> Javascript Components</a>#}
+                {##}
+                {#                            <ul class="navigation__sub">#}
+                {#                                <li>#}
+                {#                                    <a href="carousel.html">Carousel</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="collapse.html">Collapse</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="dropdowns.html">Dropdowns</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="modals.html">Modals</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="popover.html">Popover</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="tabs.html">Tabs</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="tooltips.html">Tooltips</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="toast.html">Toasts</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="treeview.html">Tree View</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="custom-alerts.html">Custom Alerts</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-line-chart"></i> Charts</a>#}
+                {##}
+                {#                            <ul>#}
+                {#                                <li>#}
+                {#                                    <a href="flot-charts.html">Flot</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="other-charts.html">Other Charts</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="maps.html">Maps</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li>#}
+                {#                            <a href="calendar.html"><i class="zwicon-calendar-never"></i> Calendar</a>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li>#}
+                {#                            <a href="photo-gallery.html"><i class="zwicon-image"></i> Photo Gallery</a>#}
+                {#                        </li>#}
+                {##}
+                {#                        <li class="navigation__sub">#}
+                {#                            <a href="#"><i class="zwicon-repository"></i> Sample Pages</a>#}
+                {##}
+                {#                            <ul>#}
+                {#                                <li>#}
+                {#                                    <a href="profile-about.html">Profile</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="messages.html">Messages</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="contacts.html">Contacts</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="new-contact.html">New Contact</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="groups.html">Groups</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="pricing-tables.html">Pricing Tables</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="invoice.html">Invoice</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="todo-lists.html">Todo Lists</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="notes.html">Notes</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="search-results.html">Search Results</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="issue-tracker.html">Issue Tracker</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="faq.html">FAQ</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="team.html">Team</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="blog.html">Blog</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="blog-detail.html">Blog Detail</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="questions-answers.html">Questions & Answers</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="questions-answers-details.html">Questions & Answers Details</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="login.html">Login & SignUp</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="lockscreen.html">Lockscreen</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="404.html">404</a>#}
+                {#                                </li>#}
+                {#                                <li>#}
+                {#                                    <a href="empty.html">Empty Page</a>#}
+                {#                                </li>#}
+                {#                            </ul>#}
+                {#                        </li>#}
+            </ul>
+        </div>
+    </aside>
+    <div class="themes">
+        <div class="scrollbar">
+            <a href="#" class="themes__item" data-sa-value="1"><img src="{% static 'arena/resources/img/bg/1.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="2"><img src="{% static 'arena/resources/img/bg/2.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="3"><img src="{% static 'arena/resources/img/bg/3.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="4"><img src="{% static 'arena/resources/img/bg/4.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="5"><img src="{% static 'arena/resources/img/bg/5.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="6"><img src="{% static 'arena/resources/img/bg/6.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="7"><img src="{% static 'arena/resources/img/bg/7.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="8"><img src="{% static 'arena/resources/img/bg/8.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="9"><img src="{% static 'arena/resources/img/bg/9.jpg' %}" alt=""></a>
+            <a href="#" class="themes__item" data-sa-value="10"><img src="{% static 'arena/resources/img/bg/10.jpg' %}" alt=""></a>
+        </div>
+    </div>
 
-            </section>
-        </main>
+    <section class="content" id="dash_content">
+        {# if event center information is saved successfully #}
+        {% if add_success %}
+            <style>
+                .swal2-modal{
+                    background-color:rgb(0,0,0);
+                }
+                .swal2-title{
+                    color:#fff;
+                }
+            </style>
+        {% endif %}
+        {% block content %}
 
-        <!-- Older IE warning message -->
-        <!--[if IE]>
+        {% endblock %}
+
+    </section>
+</main>
+
+<!-- Older IE warning message -->
+<!--[if IE]>
             <div class="ie-warning">
                 <h1>Warning!!</h1>
                 <p>You are using an outdated version of Internet Explorer, please upgrade to any of the following web browsers to access this website.</p>
@@ -647,28 +775,45 @@
             </div>
         <![endif]-->
 
-        <!-- Javascript -->
-        <!-- Vendors -->
-        <script src="{% static 'arena/resources/vendors/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'arena/js/vue.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/popper.js/popper.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/overlay-scrollbars/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- Javascript -->
+<!-- Vendors -->
+<script src="{% static 'arena/resources/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/popper.js/popper.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/overlay-scrollbars/jquery.overlayScrollbars.min.js' %}"></script>
 
-        <script src="{% static 'arena/resources/vendors/flot/jquery.flot.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/flot/jquery.flot.resize.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/flot/flot.curvedlines/curvedLines.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/peity/jquery.peity.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/jqvmap/jquery.vmap.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/jqvmap/maps/jquery.vmap.world.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/jquery.easy-pie-chart/jquery.easypiechart.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/fullcalendar/core/main.min.js' %}"></script>
-        <script src="{% static 'arena/resources/vendors/fullcalendar/daygrid/main.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/flot/jquery.flot.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/flot/jquery.flot.resize.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/flot/flot.curvedlines/curvedLines.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/peity/jquery.peity.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/jquery.easy-pie-chart/jquery.easypiechart.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/fullcalendar/core/main.min.js' %}"></script>
+<script src="{% static 'arena/resources/vendors/fullcalendar/daygrid/main.min.js' %}"></script>
+{% if alert_script %}
+    <script src="{% static 'arena/resources/vendors/sweetalert2/sweetalert2.all.min.js' %}"></script>
+{% endif %}
+{% block script %}
+{% endblock %}
+{% if add_success %}
+    <script>
+        $(function(){
+            setTimeout(function(){
+                Swal.fire({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Change Applied Successfully',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }, 1000)
+        })
+    </script>
+{% endif %}
+<!-- App functions and actions -->
+<script src="{% static 'arena/resources/js/app.min.js' %}"></script>
 
-        <!-- App functions and actions -->
-        <script src="{% static 'arena/resources/js/app.min.js' %}"></script>
-        <script src="{% static 'arena/js/dashboard.js' %}"></script>
-        <script src="{% static 'arena/js/arena-dash.js' %}"></script>
-    </body>
+</body>
 
 </html>

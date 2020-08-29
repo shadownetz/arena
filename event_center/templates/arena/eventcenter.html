@@ -1,0 +1,344 @@
+{% extends 'arena/base.html' %}
+{% load static %}
+
+{% block title %}
+    Arena | EventCenter
+{% endblock %}
+
+{% block meta %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Demo project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" type="text/css" href={% static "arena/styles/bootstrap4/bootstrap.min.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/plugins/font-awesome-4.7.0/css/font-awesome.min.css" %} >
+    <link rel="stylesheet" type="text/css" href={% static "arena/plugins/OwlCarousel2-2.2.1/owl.carousel.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/plugins/OwlCarousel2-2.2.1/animate.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/styles/post.css" %}>
+    <link rel="stylesheet" type="text/css" href={% static "arena/styles/post_responsive.css" %}>
+        <link rel="stylesheet" type="text/css" href="{% static "arena/styles/custom/arena-custom.css" %}">
+{% endblock %}
+
+{% block active_nav_event %} active {% endblock %}
+{% block content %}
+    <!-- Home -->
+
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static "arena/images/post.jpg" %}" data-speed="0.8"></div>
+        <div class="home_content">
+            <div class="post_category trans_200" style="width:100px"><a href="../../../index/templates/arena/category.html" class="trans_200">EventCenter</a></div>
+            <div class="post_title">Arena&nbsp;|&nbsp;Event Centers</div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+
+                <!-- Post Content -->
+
+                <div class="col-lg-9">
+                    <div class="post_content">
+
+                        <!-- Similar Posts -->
+                        <div class="similar_posts">
+                            <div class="grid clearfix">
+
+                                {% for center in centers %}
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src='{{ center.image_rep.url }}' alt="image" style="height:150px">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="{% url 'arena:arena_event_center:view_center' %}">{{ center.name|title }}</a></div>
+                                            <small class="post_meta"><a href="#">{{ center.owner }}</a>
+                                                <span>{{ center.date_history }}</span>
+                                                <span>{{ center.state }}, {{ center.country }} </span></small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="load_more">
+                        {% if centers.has_previous %}
+                            <a href="?page={{ centers.previous_page_number }}">
+                                <div id="load_more" class="load_more_button text-center trans_200 pull-left"><i class="fa fa-hand-o-left"></i>&nbsp;Load Previous</div>
+                            </a>
+                        {% endif %}
+                        {% if centers.has_next %}
+                            <a href="?page={{ centers.next_page_number }}">
+                                <div id="load_more" class="load_more_button text-center trans_200 pull-right">Load Next&nbsp;<i class="fa fa-hand-o-right"></i></div>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <div class="sidebar_background"></div>
+
+                        <!-- Top Stories -->
+
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Top Reviews</div>
+                                <div class="sidebar_slider_nav">
+                                    <div class="custom_nav_container sidebar_slider_nav_container">
+                                        <div class="custom_prev custom_prev_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                                        </div>
+                                        <ul id="custom_dots" class="custom_dots custom_dots_top">
+                                            <li class="custom_dot custom_dot_top active"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                        </ul>
+                                        <div class="custom_next custom_next_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar_section_content">
+
+                                <!-- Top Stories Slider -->
+                                <div class="sidebar_slider_container">
+                                    <div class="owl-carousel owl-theme sidebar_slider_top">
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_1.jpg" %} alt="image"></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_2.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_3.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_4.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_1.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_2.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_3.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_4.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_1.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_2.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_3.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="../../../index/templates/arena/post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src={% static "arena/images/top_4.jpg" %} alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advertising -->
+
+                        <div class="sidebar_section">
+                            <div class="advertising">
+                                <div class="advertising_background" style="background-image:url({% static "arena/images/post_17.jpg" %})"></div>
+                                <div class="advertising_content d-flex flex-column align-items-start justify-content-end">
+                                    <div class="advertising_perc">-15%</div>
+                                    <div class="advertising_link"><a href="#">How Did van Gogh’s Turbulent Mind</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Advertising 2 -->
+
+                        <div class="sidebar_section">
+                            <div class="advertising_2">
+                                <div class="advertising_background" style="background-image:url({% static "arena/images/post_18.jpg" %})"></div>
+                                <div class="advertising_2_content d-flex flex-column align-items-center justify-content-center">
+                                    <div class="advertising_2_link"><a href="#">Turbulent <span>Mind</span></a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+{% block script %}
+    <script src={% static "arena/js/jquery-3.2.1.min.js" %}></script>
+    <script src={% static "arena/styles/bootstrap4/popper.js" %}></script>
+    <script src={% static "arena/styles/bootstrap4/bootstrap.min.js" %}></script>
+    <script src={% static "arena/plugins/OwlCarousel2-2.2.1/owl.carousel.js" %}></script>
+    <script src={% static "arena/plugins/easing/easing.js" %}></script>
+    <script src={% static "arena/plugins/masonry/masonry.js" %}></script>
+    <script src={% static "arena/plugins/parallax-js-master/parallax.min.js" %}></script>
+    <script src={% static "arena/js/post.js" %}></script>
+    <script src="{% static "arena/js/arena-custom.js" %}"></script>
+{% endblock %}

@@ -1,6 +1,3 @@
-from .models import UserProfile
-
-
 # Encrypt password
 def hash_password(password, salt):
     import hashlib
@@ -11,15 +8,16 @@ def hash_password(password, salt):
     return binascii.hexlify(hashed).decode()
 
 
-def authenticate_user(username, password):
-    try:
-        user = UserProfile.objects.get(username=username)
+def generate_random_value(length):
+    """
+    Generate random value based on a given length
+    :param length:
+    :return:string
+    """
+    import os
+    import binascii
 
-    except UserProfile.DoesNotExist:
-        return None
-    else:
-        tmp_salt = user.salt
-        tmp_password = hash_password(password, tmp_salt)
-        if tmp_password == user.password:
-            return user
-    return None
+    value_length = length
+    tmp_value = os.urandom(value_length)
+    result = binascii.hexlify(tmp_value).decode()
+    return result

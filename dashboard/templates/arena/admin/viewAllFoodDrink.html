@@ -1,0 +1,135 @@
+{% extends 'arena/dash_base.html' %}
+{% load static %}
+{% block title %}Manage Food&Drink Item{% endblock %}
+{% block content %}
+    <div class="content__inner">
+        <header class="content__title">
+            <h1>Manage All Food&amp;Drink Items</h1>
+        </header>
+
+        <div class="card">
+            <div class="card-body">
+                {% if all_item %}
+                    <div class="accordion" id="accordionExample">
+                        {% for item in all_item %}
+                            <div class="card">
+                                <div class="card-header">
+                                    <a data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" class="collapsed" aria-expanded="false">
+                                        <i class="fa fa-caret-down"></i>&nbsp;{{ item.name | upper }}
+                                        <span class="pull-right">
+                                                {{ item.category }}
+                                            <i class="fa fa-globe"></i>
+                                            </span>
+                                    </a>
+                                </div>
+
+                                <div id="collapse{{ forloop.counter }}" class="collapse {% if forloop.counter == 1 %}show{% endif %}" data-parent="#accordionExample" style="">
+                                    {#                                        <img class="card-img-top" src="{{ center.image_rep.url }}" alt="" style="height:200px;width:50%">#}
+                                    <div class="col-md-12" style="background:url('{{ item.image_rep.url }}') no-repeat center center; background-size:cover;height:300px;"></div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <b><i class="zwicon-bar-code"></i>&nbsp;Reference ID:</b>&nbsp;<code>{{ item.ref_id }}</code>
+                                                </p>
+                                                <p>
+                                                    <b><i class="zwicon-more-v"></i>&nbsp;Category:</b>&nbsp;{{ item.category }}
+                                                </p>
+                                                <p>
+                                                    <b><i class="fa fa-glass"></i>&nbsp;Ingredients:</b>&nbsp;{{ item.ingredients }}
+                                                </p>
+                                                <p>
+                                                    <b><i class="fa fa-star text-warning"></i>&nbsp;Rating:</b>&nbsp;{{ item.rating }}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>
+                                                    <b><i class="zwicon-compass"></i>&nbsp;Country:</b>&nbsp;{{ item.assoc_country }}
+                                                </p>
+                                                <p>
+                                                    <b><i class="zwicon-compass"></i>&nbsp;State:</b>&nbsp;{{ item.assoc_states }}
+                                                </p>
+                                                <p>
+                                                    <b><i class="zwicon-calendar-month"></i>&nbsp;Date Registered:</b>&nbsp;{{ item.date_registered }}
+                                                </p>
+                                                <p>
+                                                    <a href="{% url 'arena:arena_dashboard:addFoodDrink'%}?item={{ item.ref_id }}&id={{ item.id }}&pos={{ all_item.number }}" class="btn btn-outline-theme-dark"><i class="zwicon-edit-square-feather"></i> Update Item Details</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-md-12" style="padding-top:20px">
+                            {% if all_item.has_other_pages %}
+                                <nav>
+                                <ul class="pagination justify-content-center">
+                                {# For direct first page button #}
+                                {% if all_item.number == 1 %}
+                                    <li class="page-item pagination-first disabled">
+                                        <a class="page-link" href="#"><i class="zwicon-expand-left"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item pagination-first">
+                                        <a class="page-link" href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}?page=1"><i class="zwicon-expand-left"></i></a>
+                                    </li>
+                                {% endif %}
+                                {# end of direct first page button #}
+
+                                {# for previous page button #}
+                                {% if all_item.has_previous %}
+                                    <li class="page-item pagination-prev"><a class="page-link" href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}?page={{ all_item.previous_page_number }}">
+                                        <i class="zwicon-arrow-left"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item pagination-prev disabled"><a class="page-link" href="#">
+                                        <i class="zwicon-arrow-left"></i></a>
+                                    </li>
+                                {% endif %}
+                                {# end of previous page button #}
+
+                                {# for pages button #}
+                                {% for i in all_item.paginator.page_range %}
+                                    <li class="page-item {% if all_item.number == i %}active{% endif %}">
+                                        <a class="page-link" href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endfor %}
+                                {# end of pages button #}
+
+                                {# for next page number #}
+                                {% if all_item.has_next %}
+                                    <li class="page-item pagination-next">
+                                        <a class="page-link" href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}?page={{ all_item.next_page_number }}"><i class="zwicon-arrow-right"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item pagination-next disabled">
+                                        <a class="page-link" href="#"><i class="zwicon-arrow-right"></i></a>
+                                    </li>
+                                {% endif %}
+                                {# end of next page number #}
+
+                                {# for direct last page number #}
+                                {% if all_item.number == all_item.paginator.num_pages %}
+                                    <li class="page-item pagination-first disabled">
+                                        <a class="page-link" href="#"><i class="zwicon-expand-right"></i></a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item pagination-first">
+                                        <a class="page-link" href="{% url 'arena:arena_dashboard:viewAllFoodDrinkItem' %}?page={{ all_item.paginator.num_pages }}"><i class="zwicon-expand-right"></i></a>
+                                    </li>
+                                {% endif %}
+                                {# end of direct last page number #}
+                            {% endif %}
+                            </ul>
+                            </nav>
+                        </div>
+                    </div>
+                {% else %}
+                    <h2>No Item Available</h2>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

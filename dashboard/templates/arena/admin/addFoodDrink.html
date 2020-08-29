@@ -1,0 +1,138 @@
+{% extends 'arena/dash_base.html' %}
+{% block title%}AddFoodDrink{% endblock %}
+{% load static %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/flatpickr/flatpickr.min.css' %}">
+
+{% endblock %}
+{% block content %}
+
+    <div class="content__inner">
+        <header class="content__title">
+            <h1>Add A Food or Drink Item</h1>
+        </header>
+    </div>
+    <div class="row team">
+        <div class="col-md-12">
+            <form role="form" method="post" action="{% url 'arena:arena_dashboard:process_addFoodDrink' %}" enctype="multipart/form-data" id="addFoodDrinkForm" novalidate>
+                {% csrf_token %}
+                <div class="card team__item" style="text-align: left">
+                    <img src="{% static 'arena/demo/img/gallery/8.jpg' %}" class="team__img" alt="">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for error in form.errors %}
+                                <div class="invalid-feedback" style="display: block">
+                                    <p>Please enter correct values for input fields</p>
+                                    {#                                    {{ error }}#}
+                                </div>
+                            {% endfor %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <i class="fa fa-glass"></i>&nbsp;Name
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-more-v"></i>&nbsp;Category</label>
+                                    {{ form.category }}
+                                </div>
+                                <div class="form-group">
+                                    <i class="zwicon-at"></i>&nbsp;Ingredients
+                                    {{ form.ingredients }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="zwicon-earth-alt"></i>&nbsp;Country</label>
+                                    {{ form.assoc_country }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-compass"></i>&nbsp;State</label>
+                                    {{ form.assoc_states }}
+                                </div>
+                                <div class="form-group animated fadeIn js-image-block">
+                                    <label><i class="zwicon-file-image"></i>&nbsp;Item Image {% if request.GET.item %}<span id="img-btn-toggle" title="toggle option"><a href="#"><i class="fa fa-toggle-on"></i></a> </span>{% endif %}</label>
+                                    <div class="custom-file">
+                                        {{ form.image_rep }}
+                                        <label class="custom-file-label" for="id_image_rep">Choose an Image for the event center</label>
+                                    </div>
+                                </div>
+                                <div class="form-group animated fadeIn js-image-alt-block">
+                                    <label><i class="zwicon-file-image"></i>&nbsp;Item Image</label><br>
+                                    <button class="btn btn-outline-theme-dark js-image-btn">change display picture</button>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ request.GET.item }}" id="js-item-ref-id">
+                                    <input type="hidden" value="{{ request.GET.id }}" id="js-item-id">
+                                    <input type="hidden" value="{% url 'arena:arena_dashboard:modifyFoodDrink' %}" id="js-item-modify-url">
+                                    <input type="hidden" value="{{ request.GET.pos }}" id="js-item-page-pos">
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-outline-theme-dark btn-lg js-add-food-drink-form">
+                                        <i class="fa fa-glass"></i><i class="fa fa-plus"></i>
+                                        {% if request.GET.item %}
+                                            Apply Changes
+                                        {% else %}
+                                            Add Item
+                                        {% endif %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="{% static 'arena/resources/vendors/select2/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'arena/resources/vendors/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'arena/resources/vendors/jquery-mask-plugin/jquery.mask.min.js' %}"></script>
+
+    {% if request.GET.item and request.GET.id %}
+        <script src="{% static 'arena/js/modifyFoodDrinkValidation.js' %}"></script>
+    {% else %}
+        <script src="{% static 'arena/js/addFoodDrinkValidation.js' %}"></script>
+    {% endif %}
+
+    <script>
+        $(function(){
+            let ref_id = $('#js-item-ref-id');
+            let id = $('#js-item-id');
+            let image_btn = $('.js-image-btn');
+            let image_parent_block = $('.js-image-block');
+            let image_parent_alt_block = $('.js-image-alt-block');
+            let image_alt_btn = $('#img-btn-toggle');
+            let btn_toggle_status = false;
+            image_parent_block.css('display', 'none');
+            image_parent_alt_block.css('display', 'none');
+
+            if(ref_id.val() == '' || id.val() == ''){
+                image_parent_block.css('display', 'block');
+            }else{
+                image_parent_alt_block.css('display', 'block');
+            }
+
+            image_btn.click(function(event){
+                event.preventDefault();
+                toggle_btn();
+            });
+            image_alt_btn.click(function(event){
+                event.preventDefault();
+                toggle_btn();
+            });
+            function toggle_btn(){
+                btn_toggle_status = !btn_toggle_status;
+                if(!btn_toggle_status){
+                    image_parent_block.css('display', 'none');
+                    image_parent_alt_block.css('display', 'block');
+                }else{
+                    image_parent_alt_block.css('display', 'none');
+                    image_parent_block.css('display', 'block');
+                }
+            }
+        });
+    </script>
+{% endblock %}

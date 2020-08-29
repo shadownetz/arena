@@ -1,0 +1,69 @@
+@-webkit-keyframes arenaFadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes arenaFadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes arenaFadeOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes arenaFadeOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 320px) {
+  #arena-dashboard .dash-err-block {
+    position: absolute;
+    width: 27%;
+    z-index: 110;
+    right: 0;
+    top: 15%;
+    display: none;
+    -webkit-animation-delay: 1s;
+            animation-delay: 1s;
+  }
+  #arena-dashboard .show-err {
+    -webkit-animation: arenaFadeIn 2s ease;
+            animation: arenaFadeIn 2s ease;
+  }
+  #arena-dashboard .hide-err {
+    -webkit-animation: arenaFadeOut 2s ease;
+            animation: arenaFadeOut 2s ease;
+  }
+}
+/*# sourceMappingURL=custom.css.map */

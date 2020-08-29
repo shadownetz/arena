@@ -26,22 +26,16 @@
 						<nav class="main_nav">
 							<ul>
 								<li class="{% block active_nav_index %}{% endblock %}">
-                                    <a href="index.html">Home</a>
-                                </li>
-								<li class="{% block active_nav_info %}{% endblock %}">
-                                    <a href="#">Info</a>
-                                </li>
-								<li class="{% block active_nav_music %}{% endblock %}">
-                                    <a href="#">Music</a>
-                                </li>
-								<li class="{% block active_nav_article %}{% endblock %}">
-                                    <a href="#">Articles</a>
-                                </li>
-                                <li class="{% block active_nav_software %}{% endblock %}">
-                                    <a href="#">Softwares</a>
+                                    <a href={% url "arena:index" %}>Home</a>
                                 </li>
                                 <li class="{% block active_nav_event %}{% endblock %}">
-                                    <a href="#">Events</a>
+                                    <a href={% url "arena:arena_event_center:event_center" %}>Event Centers</a>
+                                </li>
+                            <li class="{% block active_nav_food_drink %}{% endblock %}">
+                                    <a href="#">Food & Drinks</a>
+                                </li>
+                            <li class="{% block active_nav_restaurant %}{% endblock %}">
+                                    <a href="#">Restaurants</a>
                                 </li>
 								{% if user.is_authenticated %}
                                 <li><a href="{% url 'arena:arena_dashboard:index' %}">Account</a></li>
@@ -86,12 +80,10 @@
 		</div>
 		<nav class="menu_nav">
 			<ul class="menu_mm">
-				<li class="menu_mm"><a href="index.html">home</a></li>
-				<li class="menu_mm"><a href="#">info</a></li>
-				<li class="menu_mm"><a href="#">music</a></li>
-				<li class="menu_mm"><a href="#">articles</a></li>
-				<li class="menu_mm"><a href="#">softwares</a></li>
-                <li class="menu_mm"><a href="#">events</a></li>
+				<li class="menu_mm"><a href={% url "arena:index" %}>home</a></li>
+				<li class="menu_mm"><a href={% url "arena:arena_event_center:event_center" %}>event centers</a></li>
+				<li class="menu_mm"><a href="#">food & drinks</a></li>
+				<li class="menu_mm"><a href="#">restaurants</a></li>
 
                 <li class="menu_mm">
                     {% if user.is_authenticated %}
@@ -107,8 +99,91 @@
 
     {% block content %}
 
-    {% endblock %}
+        <!-- Modal -->
 
+    {% endblock %}
+<div id="arena-account" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- SignUp content -->
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Sign Up !</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form" id="arena-signup" action="{% url 'arena:signup' %}" enctype="multipart/form-data" method="post">
+                                    {% csrf_token %}
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12" style="color:red">
+                                                {% for err in error %}
+                                                    {{ err }}
+                                                {% endfor %}
+                                            </div>
+                                            {% for form in forms %}
+                                                <div class="col-lg-12 col-md-12 col-sm-12 form-padding" id="{{ form.id_for_label }}{{ forloop.counter }}">
+                                                    {{ form.label_tag }}
+                                                    {{ form }}
+                                                    {{ form.errors }}
+                                                    <div class="err-msg">hello</div>
+                                                </div>
+                                            {% endfor %}
+                                            <div class="col-md-12" style="text-align: center;">
+                                                <button class="btn btn-outline-danger btn-lg" type="submit" id="arena-submit">
+                                                    Register
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Login Content-->
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Login</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form role="form" action="{% url 'arena:login' %}" enctype="multipart/form-data" method="post">
+                                    {% csrf_token %}
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12" style="color:red">
+                                                {% for err in login_error %}
+                                                    {{ err }}
+                                                {% endfor %}
+                                            </div>
+                                            {% for form in login_form %}
+                                                <div class="col-lg-12 col-md-12 col-sm-12 form-padding">
+                                                    {{ form.label_tag }}
+                                                    {{ form }}
+                                                    {{ form.errors }}
+                                                </div>
+                                            {% endfor %}
+                                            <div class="col-md-12" style="text-align: center;">
+                                                <button class="btn btn-outline-warning btn-lg" type="submit">Login</button>
+                                                <input type="hidden" name="next" value="{{ request.GET.next }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            {#                            <div class="modal-footer">#}
+                            {#                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+                            {#                            </div>#}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 	<!-- Footer -->
 

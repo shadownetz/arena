@@ -1,10 +1,11 @@
 {% extends 'arena/dash_base.html' %}
 {% load static %}
 
+{% block title %}Profile{% endblock %}
 {% block content %}
     <div class="content__inner content__inner--sm">
         <form>
-        {% csrf_token %}
+            {% csrf_token %}
 
             <div class="contacts row">
 
@@ -13,8 +14,8 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <img src="{{ user.avatar.url }}" class="widget-profile__img" alt="">
-                                <h2 class="card-title">{{ user.username }}</h2>
-                                <p class="card-subtitle">{{ user.email }}</p>
+                                <h2 class="card-title js-uname">{{ user.username }}</h2>
+                                <p class="card-subtitle js-email">{{ user.email }}</p>
                             </div>
 
                         </div>
@@ -25,89 +26,230 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-user"></i></div>
-                                            <template v-if="toggle_name_edit">
+                                            <!-- for full name -->
+                                            {% if user.is_superuser %}
                                                 <div class="media-body">
-                                                    <input class="form-control" type="text"
-                                                           placeholder="Edit first name"
-                                                           v-model="first_name">
-                                                    <input class="form-control" type="text"
-                                                           placeholder="Edit last name"
-                                                           v-model="last_name">
-                                                </div>
-                                            </template>
-                                            <template v-else>
-                                                <div class="media-body">
-                                                    <strong>{{ user.get_full_name }}</strong>
+                                                    <strong id="fname">{{ user.get_full_name }}</strong>
                                                     <small>Fullname</small>
                                                 </div>
-                                            </template>
 
-                                            <template v-if="toggle_name_edit">
-                                                <a href="#" class="btn btn-outline-theme-dark" data-toggle="button" title="save"
-                                                   @click="editFullName($event, 1)">
-                                                    <i class="zwicon-checkmark zwicon-"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
-                                                   @click="toggle_full_name_edit">
-                                                    <i class="zwicon-close"></i>
-                                                </a>
-                                            </template>
-                                            <template v-else>
-                                                <a href="#" class="btn btn-outline-theme-dark"
-                                                   data-toggle="button"
-                                                   @click="toggle_full_name_edit">
-                                                    <i class="zwicon-edit-pencil"></i>
-                                                </a>
-                                            </template>
+                                            {% else %}
+                                                <template v-if="toggle_name_edit">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="text"
+                                                               placeholder="Edit first name"
+                                                               v-model="first_name">
+                                                        <input class="form-control" type="text"
+                                                               placeholder="Edit last name"
+                                                               v-model="last_name">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        <strong id="fname">{{ user.get_full_name }}</strong>
+                                                        <small>Fullname</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_name_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button" title="save"
+                                                       @click="editFullName($event, 1)">
+                                                        <i class="zwicon-checkmark zwicon-"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_full_name_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark"
+                                                       data-toggle="button"
+                                                       @click="toggle_full_name_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
+
                                         </div>
+                                        <!-- end of full name -->
 
+                                        <!-- for username -->
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-user"></i></div>
-                                            <div class="media-body">
-                                                <strong>{{ user.username }}</strong>
-                                                <small>Username</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    <strong class="js-uname">{{ user.username }}</strong>
+                                                    <small>Username</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="toggle_username_edit">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="text"
+                                                               placeholder="username"
+                                                               v-model="username">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        <strong class="js-uname">{{ user.username }}</strong>
+                                                        <small>Username</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_username_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editUsername($event,2)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_user_name_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_user_name_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
                                         </div>
+                                        <!-- end of username -->
                                     </div>
+                                    <!-- end of first column-->
+                                    <!-- second column -->
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-mail"></i></div>
-                                            <div class="media-body">
-                                                <strong>{{ user.email }}</strong>
-                                                <small>Email</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            <!-- for email-->
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    <strong class="js-email">{{ user.email }}</strong>
+                                                    <small>Email</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="email_edit_toggle">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="email"
+                                                               placeholder="Email"
+                                                               v-model="email">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        <strong class="js-email">{{ user.email }}</strong>
+                                                        <small>Email</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="email_edit_toggle">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editEmail($event,3)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_Email_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_Email_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
+                                            <!-- End of email-->
                                         </div>
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-password"></i></div>
-                                            <div class="media-body">
-                                                <strong>xxxxxxxx</strong>
-                                                <small>Password</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            <!-- for password-->
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    <strong>xxxxxxxx</strong>
+                                                    <small>Password</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="toggle_pass_edit">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="password"
+                                                               placeholder="Password"
+                                                               v-model="passcode">
+                                                        <input class="form-control" type="password"
+                                                               placeholder="Retype Password"
+                                                               v-model="repasscode">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        <strong>xxxxxxxx</strong>
+                                                        <small>Password</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_pass_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editPassword($event,4)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_password_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_password_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-phone"></i></div>
-                                            <div class="media-body">
-                                                {% if dashboard.phone_number %}
-                                                    <strong>{{ dashboard.phone_number }}</strong>
-                                                {% else %}
-                                                    <strong>No Phone Number</strong>
-                                                {% endif %}
-                                                <small>Phone</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            <!-- for phone number -->
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    {% if dashboard.phone_number %}
+                                                        <strong><span id="d-phone">{{ dashboard.phone_number }}</span></strong>
+                                                    {% else %}
+                                                        <strong><span id="d-phone">No Phone Number</span></strong>
+                                                    {% endif %}
+                                                    <small>Phone</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="toggle_phone_edit">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="tel"
+                                                               placeholder="Phone"
+                                                               v-model="phone_number">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        {% if dashboard.phone_number %}
+                                                            <strong><span id="d-phone">{{ dashboard.phone_number }}</span></strong>
+                                                        {% else %}
+                                                            <strong><span id="d-phone">No Phone Number</span></strong>
+                                                        {% endif %}
+                                                        <small>Phone</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_phone_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editPhone($event, 5)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_phonenumber_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_phonenumber_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
                                         </div>
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-clock"></i></div>
@@ -120,31 +262,97 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-info-circle"></i></div>
-                                            <div class="media-body">
-                                                {% if dashboard.about %}
-                                                    <strong>{{ dashboard.about }}</strong>
-                                                {% else %}
-                                                    <strong>No bio</strong>
-                                                {% endif %}
-                                                <small>About</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            <!-- for about-->
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    {% if dashboard.about %}
+                                                        <strong id="d-about">{{ dashboard.about }}</strong>
+                                                    {% else %}
+                                                        <strong id="d-about">No bio</strong>
+                                                    {% endif %}
+                                                    <small>About</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="toggle_bio_edit">
+                                                    <div class="media-body">
+                                                        <textarea class="form-control" v-model="about" placeholder="About"></textarea>
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        {% if dashboard.about %}
+                                                            <strong id="d-about">{{ dashboard.about }}</strong>
+                                                        {% else %}
+                                                            <strong id="d-about">No bio</strong>
+                                                        {% endif %}
+                                                        <small>About</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_bio_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editAbout($event,6)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_about_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_about_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
                                         </div>
                                         <div class="media">
                                             <div class="avatar-char"><i class="zwicon-user-circle"></i></div>
-                                            <div class="media-body">
-                                                {% if dashboard.nick_name %}
-                                                    <strong>{{ dashboard.nick_name }}</strong>
-                                                {% else %}
-                                                    <strong>No Public id (username will be used)</strong>
-                                                {% endif %}
-                                                <small>Public ID</small>
-                                            </div>
-                                            <a href="#" class="btn btn-outline-theme-dark" data-toggle="button">
-                                                <i class="zwicon-edit-pencil"></i>
-                                            </a>
+                                            <!-- for about -->
+                                            {% if user.is_superuser %}
+                                                <div class="media-body">
+                                                    {% if dashboard.nick_name %}
+                                                        <strong id="pubId">{{ dashboard.nick_name }}</strong>
+                                                    {% else %}
+                                                        <strong id="pubId">No Public id (username will be used)</strong>
+                                                    {% endif %}
+                                                    <small>Public ID</small>
+                                                </div>
+                                            {% else %}
+                                                <template v-if="toggle_pubId_edit">
+                                                    <div class="media-body">
+                                                        <input class="form-control" type="text"
+                                                               placeholder="Public Username"
+                                                               v-model="pub_id">
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="media-body">
+                                                        {% if dashboard.nick_name %}
+                                                            <strong id="pubId">{{ dashboard.nick_name }}</strong>
+                                                        {% else %}
+                                                            <strong id="pubId">No Public id (username will be used)</strong>
+                                                        {% endif %}
+                                                        <small>Public ID</small>
+                                                    </div>
+                                                </template>
+                                                <template v-if="toggle_pubId_edit">
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="editPubId($event,7)">
+                                                        <i class="zwicon-checkmark"></i>
+                                                    </a>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_pub_id_edit">
+                                                        <i class="zwicon-close"></i>
+                                                    </a>
+                                                </template>
+                                                <template v-else>
+                                                    <a href="#" class="btn btn-outline-theme-dark" data-toggle="button"
+                                                       @click="toggle_pub_id_edit">
+                                                        <i class="zwicon-edit-pencil"></i>
+                                                    </a>
+                                                </template>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -157,6 +365,11 @@
                     </div>
                 </div>
             </div>
+        </form>
     </div>
-    </form>
+{% endblock %}
+{% block script %}
+    <script src="{% static 'arena/js/vue.js' %}"></script>
+    <script src="{% static 'arena/js/dashboard.js' %}"></script>
+    <script src="{% static 'arena/js/arena-dash.js' %}"></script>
 {% endblock %}

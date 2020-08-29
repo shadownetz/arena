@@ -9,5 +9,14 @@
   #arena #arena-account form button:hover {
     cursor: pointer;
   }
+  #arena #arena-account form#arena-signup .err-msg {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    border-radius: 0 0 10px 10px;
+    padding: 10px;
+    color: #c81e1e;
+    display: none;
+  }
 }
 /*# sourceMappingURL=arena-custom.css.map */

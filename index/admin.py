@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import ModelEditProfile, ModelSignUp
-from .models import UserProfile, Log , UserImage
+from .models import (UserProfile, Log, UserImage, ImageGallery)
 # from django.contrib.auth import get_user_model
 
 
@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = ModelSignUp
     form = ModelEditProfile
     model = UserProfile
-    list_display = ('id', 'first_name', 'last_name', 'username', 'email', 'password', 'salt', 'is_staff', 'is_superuser', 'is_active', 'avatar', 'date_created')
+    list_display = ('id', 'first_name', 'last_name', 'username', 'email', 'password', 'is_staff', 'is_superuser', 'is_active', 'avatar', 'date_created')
     list_filter = ('username', 'email', 'is_staff', 'is_active', 'date_created',)
     fieldsets = (
         (None, {'fields': ('username', 'password', 'email')}),
@@ -37,6 +37,13 @@ class UserImageAdmin(admin.ModelAdmin):
     list_filter = ('username',)
 
 
+class AllImagesAdmin(admin.ModelAdmin):
+    model = ImageGallery
+    list_display = ('id', 'ref_id', 'image', 'uploaded')
+    list_filter = ('uploaded',)
+
+
 admin.site.register(UserProfile, CustomUserAdmin)
 admin.site.register(Log, CustomLogAdmin)
 admin.site.register(UserImage, UserImageAdmin)
+admin.site.register(ImageGallery, AllImagesAdmin)

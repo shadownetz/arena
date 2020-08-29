@@ -1,0 +1,175 @@
+{% extends 'arena/dash_base.html' %}
+{% block title%}AddEvent{% endblock %}
+{% load static %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/select2/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'arena/resources/vendors/flatpickr/flatpickr.min.css' %}">
+
+{% endblock %}
+{% block content %}
+
+    <div class="content__inner">
+        <header class="content__title">
+            <h1>Add An Event Center</h1>
+        </header>
+    </div>
+    <div class="row team">
+        <div class="col-md-12">
+            <form role="form" method="post" action="{% url 'arena:arena_dashboard:process_add_new_event_center' %}" enctype="multipart/form-data" id="addEventForm" novalidate>
+                {% csrf_token %}
+                <div class="card team__item" style="text-align: left">
+                    <img src="{% static 'arena/demo/img/gallery/5.jpg' %}" class="team__img" alt="">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for error in form.errors %}
+                                <div class="invalid-feedback" style="display: block">
+                                    {#                                    <p>Please check all input fields values</p>#}
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <i class="zwicon-user"></i>&nbsp;Owner
+                                    {{ form.owner }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-home"></i>&nbsp;Name</label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-more-v"></i>&nbsp;Category</label>
+                                    {{ form.category }}
+                                </div>
+                                <div class="form-group">
+                                    <i class="zwicon-at"></i>&nbsp;Email
+                                    {{ form.mail }}
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox mb-2">
+                                        {{ form.availability }}
+                                        <label class="custom-control-label" for="id_availability">Is this event center currently available ?</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox mb-2">
+                                        {{ form.can_book }}
+                                        <label class="custom-control-label" for="id_can_book">Can this event center be booked ?</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <i class="zwicon-my-location"></i>&nbsp;Address
+                                    {{ form.address }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <i class="zwicon-phone-andorid"></i>&nbsp;Phone
+                                    {{ form.phone }}
+                                </div>
+                                <div class="form-group">
+                                    <i class="zwicon-web"></i>&nbsp;Website
+                                    {{ form.website }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-earth-alt"></i>&nbsp;Country</label>
+                                    {{ form.country }}
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-compass"></i>&nbsp;State</label>
+                                    {{ form.state }}
+                                </div>
+                                <div class="form-group animated fadeIn js-image-block">
+                                    <label><i class="zwicon-file-image"></i>&nbsp;Event Image&nbsp;{% if request.GET.center %}<span id="img-btn-toggle" title="toggle option"><a href="#"><i class="fa fa-toggle-on"></i></a> </span>{% endif %}</label>
+                                    <div class="custom-file">
+                                        {{ form.image_rep }}
+                                        <label class="custom-file-label" for="id_image_rep">Choose an Image for the event center</label>
+                                    </div>
+                                </div>
+                                <div class="form-group animated fadeIn js-image-alt-block">
+                                    <label><i class="zwicon-file-image"></i>&nbsp;Event Image</label><br>
+                                    <button class="btn btn-outline-theme-dark js-image-btn">change display picture</button>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="zwicon-calendar"></i>&nbsp;Since when &quest;</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="zwicon-calendar-never"></i></span>
+                                        </div>
+                                        {{ form.date_history }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ request.GET.center }}" id="js-event-ref-id">
+                                    <input type="hidden" value="{{ request.GET.id }}" id="js-event-id">
+                                    <input type="hidden" value="{% url 'arena:arena_dashboard:modifyEventCenter' %}" id="js-event-modify-url">
+                                    <input type="hidden" value="{{ request.GET.pos }}" id="js-event-page-pos">
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-outline-theme-dark btn-lg js-add-event-form">
+                                        <i class="zwicon-upload"></i>
+                                        {% if request.GET.center %}
+                                            Apply Changes
+                                        {% else %}
+                                            Add Event Center
+                                        {% endif %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="{% static 'arena/resources/vendors/select2/js/select2.full.min.js' %}"></script>
+    <script src="{% static 'arena/resources/vendors/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static 'arena/resources/vendors/jquery-mask-plugin/jquery.mask.min.js' %}"></script>
+
+    {% if request.GET.center and request.GET.id %}
+        <script src="{% static 'arena/js/modifyEventCenterValidation.js' %}"></script>
+    {% else %}
+        <script src="{% static 'arena/js/addEventCenterValidation.js' %}"></script>
+    {% endif %}
+    <script>
+        $(function(){
+            let ref_id = $('#js-event-ref-id');
+            let id = $('#js-event-id');
+            let image_btn = $('.js-image-btn');
+            let image_parent_block = $('.js-image-block');
+            let image_parent_alt_block = $('.js-image-alt-block');
+            let image_alt_btn = $('#img-btn-toggle');
+            let btn_toggle_status = false;
+            image_parent_block.css('display', 'none');
+            image_parent_alt_block.css('display', 'none');
+
+            if(ref_id.val() == '' || id.val() == ''){
+                image_parent_block.css('display', 'block');
+            }else{
+                image_parent_alt_block.css('display', 'block');
+            }
+
+            image_btn.click(function(event){
+                event.preventDefault();
+                toggle_btn();
+            });
+            image_alt_btn.click(function(event){
+                event.preventDefault();
+                toggle_btn();
+            });
+            function toggle_btn(){
+                btn_toggle_status = !btn_toggle_status;
+                if(!btn_toggle_status){
+                    image_parent_block.css('display', 'none');
+                    image_parent_alt_block.css('display', 'block');
+                }else{
+                    image_parent_alt_block.css('display', 'none');
+                    image_parent_block.css('display', 'block');
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

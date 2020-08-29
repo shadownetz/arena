@@ -25,16 +25,18 @@ SECRET_KEY = 't(plpr(+f3hf)196qkzl6q^nj+jyp3)nfurlu-*5bpu0kh=k4m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'testserver',
+    '127.0.0.1'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'softwares.apps.SoftwaresConfig',
-    'articles.apps.ArticlesConfig',
-    'music.apps.MusicConfig',
-    'info.apps.InfoConfig',
+    'event_center.apps.EventCenterConfig',
+    'food_drink.apps.FoodDrinkConfig',
+    'restaurant.apps.RestaurantConfig',
     'dashboard.apps.DashboardConfig',
     'index.apps.IndexConfig',
     'django.contrib.admin',

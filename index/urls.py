@@ -12,4 +12,5 @@ urlpatterns = [
     path(r'dashboard/', include('dashboard.urls')),
     path(r'contact/', views.contact, name="contact"),
     path(r'ajax/validate_username', views.validate_username, name='validate_username'),
+    path(r'eventcenter/', include("event_center.urls")),
 ]

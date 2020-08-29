@@ -1,11 +1,15 @@
 $color: (
   white: rgb(255, 255, 255),
-  black: rgb(0, 0, 0)
+  black: rgb(0, 0, 0),
+  red: rgb(200, 30, 30)
 );
 $mobile_320: 320px;
 @function get_transparency($key, $degree) {
   $result: transparentize(map-get($color, $key), $degree);
   @return $result;
+}
+@function get_color($name) {
+  @return map-get($color, $name);
 }
 @mixin mobile-320() {
   @media screen and (min-width:#{$mobile_320}) {
@@ -22,8 +26,19 @@ $mobile_320: 320px;
         .form-padding {
           padding: 5px 0px;
         }
-        button:hover{
-            cursor: pointer;
+        button:hover {
+          cursor: pointer;
+        }
+      }
+      form#arena-signup {
+        .err-msg {
+          width: 100%;
+          background: get_transparency(black, 0.5);
+          z-index: 1;
+          border-radius: 0 0 10px 10px;
+          padding: 10px;
+          color: get_color(red);
+          display: none;
         }
       }
     }

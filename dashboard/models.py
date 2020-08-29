@@ -10,6 +10,7 @@ class Profile(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, null=True)
     nick_name = models.CharField(max_length=20, null=True)
+    shipping_addr = models.TextField(max_length=100, null=True)
     about = models.TextField(max_length=300, null=True)
 
     def __str__(self):

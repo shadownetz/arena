@@ -1,0 +1,48 @@
+$mobile_320: 320px;
+@mixin mobile-320 {
+  @media (min-width:#{$mobile_320}) {
+    @content;
+  }
+}
+@keyframes arenaFadeIn{
+  0%{
+      opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes arenaFadeOut{
+  0%{
+      opacity: 1;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+#arena-dashboard {
+  @include mobile-320 {
+    
+      .dash-err-block{
+          position: absolute;
+          width:27%;
+          z-index: 110;
+          right:0;
+          top:15%;
+          display: none;
+          animation-delay: 1s;
+      }
+      .show-err{
+        animation: arenaFadeIn 2s ease;
+      }
+      .hide-err{
+        animation: arenaFadeOut 2s ease;
+      }
+  }
+}

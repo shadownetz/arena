@@ -5,7 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 
@@ -15,7 +15,7 @@ class UserProfile(AbstractUser):
     username = models.CharField(_('username'), max_length=20, unique=True)
     is_staff = models.BooleanField(default=False, blank=True)
     is_active = models.BooleanField(default=True)
-    salt = models.CharField(max_length=200, blank=True)
+    # salt = models.CharField(max_length=200, blank=True)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/user_avatar.png')
     date_created = models.DateTimeField(default=timezone.now, blank=True)
     # last_logged = models.DateTimeField(default=True)
@@ -47,6 +47,19 @@ class UserImage(models.Model):
     username = models.CharField(max_length=20, null=True)
     image_path = models.ImageField(upload_to='avatars/')
 
+    def __str__(self):
+        return str(self.username)
+
+
+def format_all_img_path(instance, filename):
+    return 'appImages/{0}/{1}'.format(instance.ref_id, filename)
+
+
+class ImageGallery(models.Model):
+    ref_id = models.CharField(max_length=10, null=True)
+    image = models.ImageField(upload_to=format_all_img_path)
+    uploaded = models.DateTimeField(default=timezone.now)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_log(sender, instance, created, **kwargs):
@@ -55,4 +68,14 @@ def create_user_log(sender, instance, created, **kwargs):
             user=instance.username,
             category='TYPE_A',
             message='User Created Successfully',
+        ).save()
+
+
+@receiver(pre_delete, sender=settings.AUTH_USER_MODEL)
+def create_user_log(sender, instance, created, **kwargs):
+    if created:
+        Log.objects.create(
+            user=instance.username,
+            category='TYPE_A',
+            message='User Archived Successfully',
         ).save()

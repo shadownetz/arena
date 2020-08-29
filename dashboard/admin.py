@@ -10,7 +10,7 @@ class CustomArchiveAdmin(admin.ModelAdmin):
 
 class ProfilesAdmin(admin.ModelAdmin):
     model = Profile
-    list_display = ('id', 'user', 'phone_number', 'nick_name', 'about')
+    list_display = ('id', 'user', 'phone_number', 'nick_name', 'shipping_addr', 'about')
     list_filter = ('user',)
 
 
